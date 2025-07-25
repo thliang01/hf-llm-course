@@ -46,6 +46,8 @@
   - local: chapter2/7
     title: 基本用法完成！
   - local: chapter2/8
+    title: 最佳化推論部署
+  - local: chapter2/9
     title: 章末小測驗
     quiz: 2
     
