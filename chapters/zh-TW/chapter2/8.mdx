@@ -22,19 +22,19 @@ Flash Attention 是一種最佳化 transformer 模型中注意力機制的技術
 雖然在訓練期間效益最為顯著，但 Flash Attention 減少的記憶體占用也能改善推論的吞吐量。
 </Tip>
 
-**vLLM** takes a different approach by using PagedAttention. Just like how a computer manages its memory in pages, vLLM splits the model's memory into smaller blocks. This clever system means it can handle different-sized requests more flexibly and doesn't waste memory space. It's particularly good at sharing memory between different requests and reduces memory fragmentation, which makes the whole system more efficient.
+**vLLM** 採用不同的方法，使用分頁注意力機制（PagedAttention）。就像電腦以分頁方式管理記憶體一樣，vLLM 將模型的記憶體分割成較小的區塊。這個巧妙的系統意味著它可以更靈活地處理不同大小的請求，不會浪費記憶體空間。它特別擅長在不同請求之間共享記憶體，並減少記憶體碎片化，使整個系統更有效率。
 
-<Tip title="How PagedAttention Works">
-PagedAttention is a technique that addresses another critical bottleneck in LLM inference: KV cache memory management. As discussed in [Chapter 1.8](/course/chapter1/8), during text generation, the model stores attention keys and values (KV cache) for each generated token to reduce redundant computations. The KV cache can become enormous, especially with long sequences or multiple concurrent requests.
+<Tip title="PagedAttention 的運作原理">
+分頁注意力機制（PagedAttention）是一種解決大型語言模型推理中另一個關鍵瓶頸的技術：KV 快取記憶體管理。如[第 1.8 章](/course/chapter1/8)所述，在文字生成過程中，模型會為每個生成的符記儲存注意力鍵值（KV 快取）以減少冗餘運算。KV 快取可能變得非常龐大，特別是在長序列或多個並行要求的情況下。
 
-vLLM's key innovation lies in how it manages this cache:
+vLLM 的關鍵創新在於它如何管理這個快取：
 
-1. **Memory Paging**: Instead of treating the KV cache as one large block, it's divided into fixed-size "pages" (similar to virtual memory in operating systems).
-2. **Non-contiguous Storage**: Pages don't need to be stored contiguously in GPU memory, allowing for more flexible memory allocation.
-3. **Page Table Management**: A page table tracks which pages belong to which sequence, enabling efficient lookup and access.
-4. **Memory Sharing**: For operations like parallel sampling, pages storing the KV cache for the prompt can be shared across multiple sequences.
+1. **記憶體分頁**: 與其將 KV 快取視為一個大區塊，它被分割成固定大小的「分頁」（類似作業系統中的虛擬記憶體）。
+2. **非連續儲存**: 分頁不需要在 GPU 記憶體中連續儲存，允許更靈活的記憶體配置。
+3. **分頁表管理**: 分頁表追蹤哪些分頁屬於哪個序列，實現高效的查找與存取。
+4. **記憶體共享**: 對於平行取樣等操作，儲存提示詞 KV 快取的分頁可以跨多個序列共享。
 
-The PagedAttention approach can lead to up to 24x higher throughput compared to traditional methods, making it a game-changer for production LLM deployments. If you want to go really deep into how PagedAttention works, you can read the [the guide from the vLLM documentation](https://docs.vllm.ai/en/latest/design/kernel/paged_attention.html).
+分頁注意力機制方法與傳統方法相比，可以帶來高達 24 倍的吞吐量提升，使其成為生產環境大型語言模型部署的革命性技術。如果您想深入了解分頁注意力機制的運作原理，可以閱讀 [vLLM 文件中的指南](https://docs.vllm.ai/en/latest/design/kernel/paged_attention.html)。
 </Tip>
 
 **llama.cpp** is a highly optimized C/C++ implementation originally designed for running LLaMA models on consumer hardware. It focuses on CPU efficiency with optional GPU acceleration and is ideal for resource-constrained environments. llama.cpp uses quantization techniques to reduce model size and memory requirements while maintaining good performance. It implements optimized kernels for various CPU architectures and supports basic KV cache management for efficient token generation.
