@@ -37,18 +37,18 @@ vLLM 的關鍵創新在於它如何管理這個快取：
 分頁注意力機制方法與傳統方法相比，可以帶來高達 24 倍的吞吐量提升，使其成為生產環境大型語言模型部署的革命性技術。如果您想深入了解分頁注意力機制的運作原理，可以閱讀 [vLLM 文件中的指南](https://docs.vllm.ai/en/latest/design/kernel/paged_attention.html)。
 </Tip>
 
-**llama.cpp** is a highly optimized C/C++ implementation originally designed for running LLaMA models on consumer hardware. It focuses on CPU efficiency with optional GPU acceleration and is ideal for resource-constrained environments. llama.cpp uses quantization techniques to reduce model size and memory requirements while maintaining good performance. It implements optimized kernels for various CPU architectures and supports basic KV cache management for efficient token generation.
+**llama.cpp** 是一個高度最佳化的 C/C++ 實作，最初設計用於在消費級硬體上執行 LLaMA 模型。它專注於 CPU 效率，並提供選擇性的 GPU 加速，非常適合資源受限的環境。llama.cpp 使用量化技術來減少模型大小和記憶體需求，同時保持良好的效能。它針對各種 CPU 架構實作了最佳化的核心，並支援基本的 KV 快取管理以實現高效的權杖生成。
 
-<Tip title="How llama.cpp Quantization Works">
-Quantization in llama.cpp reduces the precision of model weights from 32-bit or 16-bit floating point to lower precision formats like 8-bit integers (INT8), 4-bit, or even lower. This significantly reduces memory usage and improves inference speed with minimal quality loss.
+<Tip title="llama.cpp 量化如何運作">
+llama.cpp 中的量化技術將模型權重的精度從 32 位元或 16 位元浮點數降低到較低精度的格式，如 8 位元整數（INT8）、4 位元，甚至更低。這大幅減少了記憶體使用量並提高了推論速度，同時品質損失極小。
 
 Key quantization features in llama.cpp include:
-1. **Multiple Quantization Levels**: Supports 8-bit, 4-bit, 3-bit, and even 2-bit quantization
-2. **GGML/GGUF Format**: Uses custom tensor formats optimized for quantized inference
-3. **Mixed Precision**: Can apply different quantization levels to different parts of the model
-4. **Hardware-Specific Optimizations**: Includes optimized code paths for various CPU architectures (AVX2, AVX-512, NEON)
+1. **多重量化層級**: 支援 8 位元、4 位元、3 位元，甚至 2 位元量化
+2. **GGML/GGUF 格式**: 使用針對量化推論最佳化的自訂張量格式
+3. **混合精度**: 可對模型的不同部分套用不同的量化層級
+4. **硬體專屬最佳化**: 包含針對各種 CPU 架構（AVX2、AVX-512、NEON）最佳化的程式路徑
 
-This approach enables running billion-parameter models on consumer hardware with limited memory, making it perfect for local deployments and edge devices.
+這種方法能讓數十億參數的模型在記憶體有限的消費級硬體上執行，使其非常適合本機部署和邊緣裝置。
 </Tip>
 
 
