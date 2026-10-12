@@ -213,7 +213,7 @@ unmasker("This course will teach you all about <mask> models.", top_k=2)
 ```python
 from transformers import pipeline
 
-ner = pipeline("ner", grouped_entities=True)
+ner = pipeline("ner", aggregation_strategy="simple")
 ner("My name is Sylvain and I work at Hugging Face in Brooklyn.")
 ```
 ```python out
